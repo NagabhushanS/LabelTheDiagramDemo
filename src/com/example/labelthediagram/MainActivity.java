@@ -1,3 +1,6 @@
+//@author: Nagabhushan S B
+//Demo application for Label The Diagram
+
 package com.example.labelthediagram;
 
 import static com.example.labelthediagram.DimentionConstants.*;

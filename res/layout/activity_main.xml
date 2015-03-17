@@ -1,105 +1,129 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="#4DFF4D" >
+    android:background="#FF9900"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="#ffffff"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/score"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:text="@string/scorestring"
-            android:textSize="30sp" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="234dp"
-            android:layout_height="210dp"
-            android:layout_gravity="center"
-            android:src="@drawable/diagram1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            android:weightSum="2" >
+            android:background="#FF9900"
+            android:orientation="horizontal" >
 
-            <LinearLayout
+            <ImageView
+                android:layout_marginTop="0dp"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_action_user" />
+
+            <TextView
+                android:id="@+id/scoreTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2" >
-
-                <TextView
-                     android:layout_marginRight="2dp"
-                    android:background="#CCFF33"
-                    android:id="@+id/vId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/voltmeter"
-                    android:textSize="20sp" />
-
-                <TextView
-                     android:layout_marginLeft="2dp"
-                    android:background="#CCFF33"
-                    android:id="@+id/aId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/ammeter"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="10dp" >
-
-                <TextView
-                    android:layout_marginRight="2dp"
-                    android:background="#CCFF33"
-                    android:id="@+id/bId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/battery"
-                    android:textSize="20sp" />
-
-                <TextView
-                     android:layout_marginLeft="2dp"
-                    android:background="#CCFF33"
-                    android:id="@+id/lId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/load"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                android:layout_height="40dp"
+                android:layout_marginBottom="15dp"
+                android:background="#FF9900"
+                android:paddingLeft="0sp"
+                android:paddingTop="7dp"
+                android:text="@string/scorestring"
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
         </LinearLayout>
-        <Button 
+
+        <ImageView
+            android:id="@+id/diagram"
+            android:layout_width="match_parent"
+            android:layout_height="251dp"
+            android:layout_margin="0dp"
+            android:background="#FFFFCC"
+            android:src="@drawable/electricdiagram" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:text="Restart"
-            />
+            android:background="#FF9900"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:weightSum="10" >
+
+            <TextView
+                android:fontFamily="sans-serif-medium"
+                android:id="@+id/bulb"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_weight="8"
+                android:text="Bulb"
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/hint1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/ic_action_select_all" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF9900"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:weightSum="10" >
+
+            <TextView
+                android:id="@+id/switchOne"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_weight="8"
+                android:text="Switch"
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/hint2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/ic_action_select_all" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF9900"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:weightSum="10" >
+
+            <TextView
+                android:id="@+id/cell"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_weight="8"
+                android:text="Cell"
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/hint3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/ic_action_select_all" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

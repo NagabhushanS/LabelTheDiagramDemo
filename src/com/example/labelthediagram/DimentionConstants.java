@@ -2,21 +2,19 @@ package com.example.labelthediagram;
 
 public class DimentionConstants {
 	
-	public static final int vblx=106;
-	public static final int vbly=160;
-	public static final int vtrx=135;
-	public static final int vtry=203;
-	public static final int bblx=100;
-	public static final int bbly=10;
-	public static final int btrx=133;
-	public static final int btry=43;
-	public static final int ablx=15;
-	public static final int ably=60;
-	public static final int atrx=45;
-	public static final int atry=94;
-	public static final int lblx=110;
-	public static final int lbly=110;
-	public static final int ltrx=142;
-	public static final int ltry=143;
+	public static final int cblx=140;
+	public static final int cbly=23;
+	public static final int ctrx=230;
+	public static final int ctry=62;
+	public static final int bblx=127;
+	public static final int bbly=145;
+	public static final int btrx=187;
+	public static final int btry=231;
+	public static final int sblx=60;
+	public static final int sbly=10;
+	public static final int strx=103;
+	public static final int stry=70;
 
-}
+}//157, 171 bulb
+//77, 35 switch
+//176, 40

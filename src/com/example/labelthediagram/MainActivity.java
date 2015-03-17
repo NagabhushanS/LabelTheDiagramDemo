@@ -150,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
 								&& flag2 == 0) {
 							score++;
 							flag2++;
-							scoreTextView.setText("Your Score: " + score);
+							scoreTextView.setText("Score: " + score);
 
 							Toast.makeText(getApplicationContext(), "Correct",
 									Toast.LENGTH_SHORT).show();
@@ -168,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
 								&& flag3 == 0) {
 							score++;
 							flag3++;
-							scoreTextView.setText("Your Score: " + score);
+							scoreTextView.setText("Score: " + score);
 
 							Toast.makeText(getApplicationContext(), "Correct",
 									Toast.LENGTH_SHORT).show();
@@ -238,7 +238,7 @@ public class MainActivity extends ActionBarActivity {
 
 	public void restart() {
 		score = flag1 = flag2 = flag3 = 0;
-		scoreTextView.setText("Your Score: 0");
+		scoreTextView.setText("Score: 0");
 	}
 
 }

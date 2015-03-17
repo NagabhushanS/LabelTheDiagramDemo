@@ -33,7 +33,8 @@ public class MainActivity extends ActionBarActivity {
 	private TextView scoreTextView, timeCount;
 	private DisplayMetrics metrics;
 	private int densityDpi;
-	private static int score = 0, flag1 = 0, flag2 = 0, flag3 = 0, x = 20;
+	private static int score = 0, flag1 = 0, flag2 = 0, flag3 = 0;
+	private int x = 20;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

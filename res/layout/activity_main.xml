@@ -17,10 +17,10 @@
             android:orientation="horizontal" >
 
             <ImageView
+                android:id="@+id/playPause"
                 android:layout_marginTop="0dp"
                 android:layout_width="70dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_action_user" />
+                android:layout_height="50dp" />
 
             <TextView
                 android:id="@+id/scoreTextView"

@@ -14,6 +14,10 @@ import static com.example.labelthediagram.DimentionConstants.sblx;
 import static com.example.labelthediagram.DimentionConstants.sbly;
 import static com.example.labelthediagram.DimentionConstants.strx;
 import static com.example.labelthediagram.DimentionConstants.stry;
+
+import com.example.labelthediagram.R.drawable;
+
+import android.R.plurals;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
@@ -27,14 +31,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
-	//define variables 
-	private TextView switchOne, cell, bulb;
-	private ImageView diagram, icon1, icon2, icon3;
+	// define variables
+	private TextView switchOne, cell, bulb; // switchOne is used because switch
+											// is a key word.
+	private ImageView diagram, icon1, icon2, icon3, playPause;
 	private TextView scoreTextView, timeCount;
 	private DisplayMetrics metrics;
 	private int densityDpi;
 	private static int score = 0, flag1 = 0, flag2 = 0, flag3 = 0;
 	private int x = 20;
+	private  int pauseInt = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,11 @@ public class MainActivity extends ActionBarActivity {
 		// method for initialization
 		initialize();
 
-		// define listener for implementation of hints
+		// set the image of playPause as pause initially
+		playPause.setImageDrawable(getResources().getDrawable(
+				R.drawable.ic_action_pause_over_video1));
+
+		// define listener for implementation of hints and pause
 		View.OnClickListener list = new View.OnClickListener() {
 
 			@Override
@@ -83,26 +93,47 @@ public class MainActivity extends ActionBarActivity {
 						cell.setTextSize(30);
 					}
 					break;
+				case R.id.playPause:
+					// handle pause and play actions
+
+					if (playPause
+							.getDrawable()
+							.getConstantState()
+							.equals(getResources().getDrawable(
+									R.drawable.ic_action_play1)
+									.getConstantState())) {
+
+						playPause.setImageDrawable(getResources().getDrawable(
+								R.drawable.ic_action_pause_over_video1));
+
+					} else {
+
+						playPause.setImageDrawable(getResources().getDrawable(
+								R.drawable.ic_action_play1));
+					}
+					break;
+
 				}
 
 			}
 		};
-		
+
 		// set on click listeners
 		icon1.setOnClickListener(list);
 		icon2.setOnClickListener(list);
 		icon3.setOnClickListener(list);
-		
+		playPause.setOnClickListener(list);
+
 		// setup the on drag listener
 		diagram.setOnDragListener(new View.OnDragListener() {
 
-			//override the method
+			// override the method
 			@Override
 			public boolean onDrag(View v, DragEvent event) {
 				int action = event.getAction();
 				float x = 0, y = 0;
 
-				//handle events according to action
+				// handle events according to action
 				switch (action) {
 				case DragEvent.ACTION_DRAG_STARTED:
 					break;
@@ -119,7 +150,8 @@ public class MainActivity extends ActionBarActivity {
 					y = 0;
 					break;
 				case DragEvent.ACTION_DROP:
-					//when action is drop, get the x and y coordinates and check for truthness
+					// when action is drop, get the x and y coordinates and
+					// check for truthness
 					x = (float) (((float) event.getX()) / ((float) densityDpi) * 160.00);
 					y = (float) (((float) event.getY()) / ((float) densityDpi) * 160.00);
 					TextView draggedView = (TextView) event.getLocalState();
@@ -127,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
 					switch (s) {
 					case "Bulb":
 
-						//case 1: if label dragged is bulb
+						// case 1: if label dragged is bulb
 						if (x > bblx && x < btrx && y > bbly && y < btry
 								&& flag1 == 0) {
 							score++;
@@ -147,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
 						break;
 
 					case "Cell":
-						//case 2: if label dragged is cell
+						// case 2: if label dragged is cell
 						if (x > cblx && x < ctrx && y > cbly && y < ctry
 								&& flag2 == 0) {
 							score++;
@@ -166,7 +198,7 @@ public class MainActivity extends ActionBarActivity {
 
 						break;
 					case "Switch":
-						//case 3: if label dragged is switch
+						// case 3: if label dragged is switch
 						if (x > sblx && x < strx && y > sbly && y < stry
 								&& flag3 == 0) {
 							score++;
@@ -224,27 +256,75 @@ public class MainActivity extends ActionBarActivity {
 	protected void onResume() {
 		super.onResume();
 
-		countTheTime();
+		countTheTime(1);
 
 	}
-	
-	
-	
-    // extracted method for implementing the count in a background thread
-	public void countTheTime() {
+
+	// extracted method for implementing the count in a background thread
+	public void countTheTime(int flag) {
 		Thread timer = new Thread() {
 			@Override
 			public void run() {
 				super.run();
 				while (x > 0 && score < 3) {
-					try {
-						sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					// if paused state
+					if (playPause
+							.getDrawable()
+							.getConstantState()
+							.equals(getResources().getDrawable(
+									R.drawable.ic_action_pause_over_video1)
+									.getConstantState())) {
+						try {
+							sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						x--;
+						pauseInt = 1;
 					}
-					x--;
+					// if resumed(play) state
+					else {
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if(pauseInt==1){
+							runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									AlertDialog.Builder builder = new AlertDialog.Builder(
+											MainActivity.this);
+									builder.setTitle("Easy!!!");
+									builder.setMessage("Paused!!");
+									builder.setPositiveButton("Resume",
+											new DialogInterface.OnClickListener() {
+
+												@Override
+												public void onClick(
+														DialogInterface dialog,
+														int which) {
+													playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause_over_video1));
+												}
+											});
+									
+									AlertDialog dialog = builder.create();
+									if (!isFinishing()) {
+										dialog.show();
+									}
+									
+								}
+							});
+							
+							
+						}
+						pauseInt++;
+						
+					}
 					final int z = x;
-					
+
 					// set the text of score in ui thread
 					runOnUiThread(new Runnable() {
 
@@ -270,7 +350,16 @@ public class MainActivity extends ActionBarActivity {
 									MainActivity.this);
 							builder.setTitle("Ooops!!!");
 							builder.setMessage("Time up!");
-							builder.setNegativeButton(android.R.string.ok, null);
+							builder.setNegativeButton(android.R.string.ok,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											finish();
+										}
+									});
 							builder.setPositiveButton("Restart",
 									new DialogInterface.OnClickListener() {
 
@@ -283,11 +372,11 @@ public class MainActivity extends ActionBarActivity {
 										}
 									});
 							AlertDialog dialog = builder.create();
-							dialog.show();
-						} else {
-							// don nothing
+							if (!isFinishing()) {
+								dialog.show();
+							}
 
-						}
+						} 
 
 					}
 				});
@@ -295,10 +384,21 @@ public class MainActivity extends ActionBarActivity {
 			}
 
 		};
-		timer.start();
+		if (flag == 1)
+			timer.start();
+		else if (flag == 2)
+			try {
+				synchronized (timer) {
+					timer.wait();
+				}
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		else
+			timer.notify();
 	}
 
-	
 	// extracted method for initializing the variables.
 	public void initialize() {
 		score = flag1 = flag2 = flag3 = 0;
@@ -317,9 +417,10 @@ public class MainActivity extends ActionBarActivity {
 		icon1 = (ImageView) findViewById(R.id.hint1);
 		icon2 = (ImageView) findViewById(R.id.hint2);
 		icon3 = (ImageView) findViewById(R.id.hint3);
+		playPause = (ImageView) findViewById(R.id.playPause);
 	}
-	
-	//on long click listener implementation for the label text views
+
+	// on long click listener implementation for the label text views
 
 	private class MyLongClickListener implements View.OnLongClickListener {
 
@@ -342,13 +443,12 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	
 	// restart method
 	public void restart() {
 		score = flag1 = flag2 = flag3 = 0;
 		timeCount.setText("" + 20);
 		x = 20;
-		countTheTime();
+		countTheTime(1);
 		scoreTextView.setText("Score: 0");
 	}
 

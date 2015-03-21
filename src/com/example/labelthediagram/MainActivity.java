@@ -14,10 +14,6 @@ import static com.example.labelthediagram.DimentionConstants.sblx;
 import static com.example.labelthediagram.DimentionConstants.sbly;
 import static com.example.labelthediagram.DimentionConstants.strx;
 import static com.example.labelthediagram.DimentionConstants.stry;
-
-import com.example.labelthediagram.R.drawable;
-
-import android.R.plurals;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
@@ -40,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
 	private int densityDpi;
 	private static int score = 0, flag1 = 0, flag2 = 0, flag3 = 0;
 	private int x = 20;
-	private  int pauseInt = 1;
+	private int pauseInt = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -227,6 +223,7 @@ public class MainActivity extends ActionBarActivity {
 
 				// if successfully labelled, then display alert dialog
 				if (score == 3) {
+					// show dialog
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							MainActivity.this);
 					builder.setTitle("Hurray!!!");
@@ -256,7 +253,18 @@ public class MainActivity extends ActionBarActivity {
 	protected void onResume() {
 		super.onResume();
 
+		// start the thread
 		countTheTime(1);
+
+	}
+
+	@Override
+	protected void onPause() {
+
+		// on pausing finish the activity since we are counting the game time
+		// and we don't want to user to pause the activity
+		super.onPause();
+		finish();
 
 	}
 
@@ -265,142 +273,148 @@ public class MainActivity extends ActionBarActivity {
 		Thread timer = new Thread() {
 			@Override
 			public void run() {
-				super.run();
-				while (x > 0 && score < 3) {
-					// if paused state
-					if (playPause
-							.getDrawable()
-							.getConstantState()
-							.equals(getResources().getDrawable(
-									R.drawable.ic_action_pause_over_video1)
-									.getConstantState())) {
-						try {
-							sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						x--;
-						pauseInt = 1;
-					}
-					// if resumed(play) state
-					else {
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if(pauseInt==1){
-							runOnUiThread(new Runnable() {
-								
-								@Override
-								public void run() {
-									AlertDialog.Builder builder = new AlertDialog.Builder(
-											MainActivity.this);
-									builder.setTitle("Easy!!!");
-									builder.setMessage("Paused!!");
-									builder.setPositiveButton("Resume",
-											new DialogInterface.OnClickListener() {
+				{
 
-												@Override
-												public void onClick(
-														DialogInterface dialog,
-														int which) {
-													playPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause_over_video1));
-												}
-											});
-									
-									AlertDialog dialog = builder.create();
-									if (!isFinishing()) {
-										dialog.show();
+					super.run();
+
+					while (x > 0 && score < 3) {
+						// if paused state
+
+						if (playPause
+								.getDrawable()
+								.getConstantState()
+								.equals(getResources().getDrawable(
+										R.drawable.ic_action_pause_over_video1)
+										.getConstantState())) {
+							try {
+								sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							x--;
+							pauseInt = 1;
+						}
+						// if resumed(play) state
+						else if (playPause
+								.getDrawable()
+								.getConstantState()
+								.equals(getResources().getDrawable(
+										R.drawable.ic_action_play1)
+										.getConstantState())) {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							if (pauseInt == 1) {
+								runOnUiThread(new Runnable() {
+
+									@Override
+									public void run() {
+										AlertDialog.Builder builder = new AlertDialog.Builder(
+												MainActivity.this);
+										builder.setTitle("Easy!!!");
+										builder.setMessage("Paused!!");
+										builder.setPositiveButton(
+												"Resume",
+												new DialogInterface.OnClickListener() {
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {
+														playPause
+																.setImageDrawable(getResources()
+																		.getDrawable(
+																				R.drawable.ic_action_pause_over_video1));
+													}
+												});
+
+										AlertDialog dialog = builder.create();
+										if (!isFinishing()) {
+											dialog.show();
+										}
+
 									}
-									
-								}
-							});
-							
-							
-						}
-						pauseInt++;
-						
-					}
-					final int z = x;
+								});
 
-					// set the text of score in ui thread
+							}
+							pauseInt++;
+
+						} else {
+
+						}
+						final int z = x;
+
+						// set the text of score in ui thread
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								if (z < 10) {
+									timeCount.setText("  " + z);
+								} else {
+									timeCount.setText("" + z);
+								}
+
+							}
+						});
+					}
+
+					// display alertDialog in ui thread
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							if (z < 10) {
-								timeCount.setText("  " + z);
-							} else {
-								timeCount.setText("" + z);
+							if (score != 3) {
+								// show Dialog
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										MainActivity.this);
+								builder.setTitle("Ooops!!!");
+								builder.setMessage("Time up!");
+								builder.setNegativeButton(android.R.string.ok,
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												finish();
+											}
+										});
+								builder.setPositiveButton("Restart",
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												restart();
+
+											}
+										});
+								AlertDialog dialog = builder.create();
+								if (!isFinishing()) {
+									dialog.show();
+								}
+
 							}
 
 						}
 					});
 
 				}
-				// display alertDialog in ui thread
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						if (score != 3) {
-							AlertDialog.Builder builder = new AlertDialog.Builder(
-									MainActivity.this);
-							builder.setTitle("Ooops!!!");
-							builder.setMessage("Time up!");
-							builder.setNegativeButton(android.R.string.ok,
-									new DialogInterface.OnClickListener() {
-
-										@Override
-										public void onClick(
-												DialogInterface dialog,
-												int which) {
-											finish();
-										}
-									});
-							builder.setPositiveButton("Restart",
-									new DialogInterface.OnClickListener() {
-
-										@Override
-										public void onClick(
-												DialogInterface dialog,
-												int which) {
-											restart();
-
-										}
-									});
-							AlertDialog dialog = builder.create();
-							if (!isFinishing()) {
-								dialog.show();
-							}
-
-						} 
-
-					}
-				});
-
 			}
 
 		};
 		if (flag == 1)
 			timer.start();
-		else if (flag == 2)
-			try {
-				synchronized (timer) {
-					timer.wait();
-				}
 
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		else
-			timer.notify();
 	}
 
 	// extracted method for initializing the variables.
 	public void initialize() {
+		// initialize
 		score = flag1 = flag2 = flag3 = 0;
 		metrics = getResources().getDisplayMetrics();
 		densityDpi = (int) (metrics.density * 160f);
@@ -427,6 +441,8 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public boolean onLongClick(View v) {
 
+			// no need for explicit clip data as we are passing the text view in
+			// startDrag() method
 			ClipData dragData = ClipData.newPlainText("", "");
 
 			View.DragShadowBuilder myShadow = new MyDragShadowBuilder(v);
@@ -445,6 +461,7 @@ public class MainActivity extends ActionBarActivity {
 
 	// restart method
 	public void restart() {
+		// set all the variables to their initial values
 		score = flag1 = flag2 = flag3 = 0;
 		timeCount.setText("" + 20);
 		x = 20;

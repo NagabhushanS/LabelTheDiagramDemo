@@ -4,6 +4,7 @@ public class DimentionConstants {
 	
 	// constants defining the rectangular regions for each part of the diagram
 	// these are obtained from GIMP
+	// these are in dp (density independent pixels)
 	//cell
 	public static final int cblx=140;
 	public static final int cbly=23;

@@ -17,6 +17,7 @@ import static com.example.labelthediagram.DimentionConstants.stry;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
@@ -37,6 +38,7 @@ public class MainActivity extends ActionBarActivity {
 	private static int score = 0, flag1 = 0, flag2 = 0, flag3 = 0;
 	private int x = 20;
 	private int pauseInt = 1;
+	private int delayFlag=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -228,7 +230,18 @@ public class MainActivity extends ActionBarActivity {
 							MainActivity.this);
 					builder.setTitle("Hurray!!!");
 					builder.setMessage("You have successfully labelled the diagram!");
-					builder.setNegativeButton(android.R.string.ok, null);
+					builder.setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent statIntent = new Intent(MainActivity.this, StatActivity.class);
+							statIntent.putExtra("score", score);
+							statIntent.putExtra("time", 20-Integer.parseInt(timeCount.getText().toString()));
+							statIntent.putExtra("sucessBoolean", true);
+							startActivity(statIntent);
+							
+						}
+					});
 					builder.setPositiveButton("Restart",
 							new DialogInterface.OnClickListener() {
 
@@ -279,6 +292,8 @@ public class MainActivity extends ActionBarActivity {
 
 					while (x > 0 && score < 3) {
 						// if paused state
+						int i=0;
+						for( i=0; i<1000; i++){
 
 						if (playPause
 								.getDrawable()
@@ -287,20 +302,27 @@ public class MainActivity extends ActionBarActivity {
 										R.drawable.ic_action_pause_over_video1)
 										.getConstantState())) {
 							try {
-								sleep(1000);
+								sleep(1);
+								delayFlag=1;
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							x--;
+							
 							pauseInt = 1;
 						}
+						else
+							break;
+						}
+						if(delayFlag==1 && i>980)
+							x--;
 						// if resumed(play) state
-						else if (playPause
+						if (playPause
 								.getDrawable()
 								.getConstantState()
 								.equals(getResources().getDrawable(
 										R.drawable.ic_action_play1)
 										.getConstantState())) {
+							delayFlag=0;
 							try {
 								Thread.sleep(10);
 							} catch (InterruptedException e) {
@@ -379,7 +401,11 @@ public class MainActivity extends ActionBarActivity {
 											public void onClick(
 													DialogInterface dialog,
 													int which) {
-												finish();
+												Intent statIntent = new Intent(MainActivity.this, StatActivity.class);
+												statIntent.putExtra("score", score);
+												statIntent.putExtra("time", 20-x);
+												statIntent.putExtra("sucessBoolean", false);
+												startActivity(statIntent);
 											}
 										});
 								builder.setPositiveButton("Restart",

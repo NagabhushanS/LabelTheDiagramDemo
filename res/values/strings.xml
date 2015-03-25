@@ -9,5 +9,6 @@
     <string name="battery">Battery</string>
     <string name="load">Load</string>
     <string name="scorestring">Score: 0</string>
+    <string name="title_activity_stat">StatActivity</string>
 
 </resources>

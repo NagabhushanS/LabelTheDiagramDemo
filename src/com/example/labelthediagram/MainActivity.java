@@ -237,7 +237,7 @@ public class MainActivity extends ActionBarActivity {
 							// start StatActivity to show the game scores
 							Intent statIntent = new Intent(MainActivity.this, StatActivity.class);
 							statIntent.putExtra("score", score);
-							statIntent.putExtra("time", 20-Integer.parseInt(timeCount.getText().toString()));
+							statIntent.putExtra("time", 20-Integer.parseInt(timeCount.getText().toString().trim()));
 							statIntent.putExtra("sucessBoolean", true);
 							startActivity(statIntent);
 							
